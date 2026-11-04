@@ -1,6 +1,7 @@
 package wezspawn
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -36,7 +37,7 @@ func stubMux(t *testing.T, clients, panes string) (*[]muxCall, *bool) {
 			return "", fmt.Errorf("unexpected mux command %q", args[2])
 		}
 	}
-	startGUI = func(string, string) error {
+	startGUI = func(string, string, target, []string) error {
 		launched = true
 		return nil
 	}
@@ -48,7 +49,7 @@ func stubMux(t *testing.T, clients, panes string) (*[]muxCall, *bool) {
 }
 
 func clientsFor(workspace string, pane int) string {
-	return fmt.Sprintf(`[{"workspace":%q,"focused_pane_id":%d}]`, workspace, pane)
+	return fmt.Sprintf(`[{"workspace":%q,"focused_pane_id":%d,"idle_time":{"secs":0,"nanos":0}}]`, workspace, pane)
 }
 
 func panesFor(pane int, cwd string) string {
@@ -90,7 +91,14 @@ func TestRunStartsTheGUIWithoutAClient(t *testing.T) {
 }
 
 func TestFocusKeepsAWorkspaceWhenTheDirectoryIsUnavailable(t *testing.T) {
-	found := focus(clientsFor("review", 4), panesFor(4, "/not/a/directory/here"))
+	var clients []client
+	if err := json.Unmarshal([]byte(clientsFor("review", 4)), &clients); err != nil {
+		t.Fatal(err)
+	}
+	found, err := focus(clients, panesFor(4, "/not/a/directory/here"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	if found.workspace != "review" || found.cwd != "" {
 		t.Errorf("focus = %+v", found)
 	}
