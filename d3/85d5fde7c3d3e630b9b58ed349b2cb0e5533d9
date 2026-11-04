@@ -1,0 +1,25 @@
+README.md
+  s_a317954659702d::t_433bb2c48d275f 42-50
+internal/wezspawn/launcher_test.go
+  s_a317954659702d::t_2a859706a32d46 1-280
+internal/wezspawn/wezspawn.go
+  s_a317954659702d::t_52c2539fb342f2 6,8,12-15,24,30-32,37-38,40-41,48-50,53-57,68,83-103,106-107,110-111,114,117-126,129-134,136,144-146,166-190,196-197,199,202-203,205,207-210,222-233,239-257
+internal/wezspawn/wezspawn_test.go
+  s_a317954659702d::t_040b7f1f2bc445 4,40,52,94-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d385d5fde7c3d3e630b9b58ed349b2cb0e5533d9",
+  "prompts": {},
+  "sessions": {
+    "s_a317954659702d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1a479-f4f1-7893-a092-cdff4ff483e6",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Roshan Bhatia <rshnbhatia@gmail.com>"
+    }
+  }
+}
