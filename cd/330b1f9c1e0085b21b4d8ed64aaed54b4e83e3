@@ -1,0 +1,39 @@
+tests/plugin.lua
+  s_de8d39c3c56992::t_798ecabbd11f71 50-52
+internal/wezspawn/wezspawn.go
+  s_de8d39c3c56992::t_798ecabbd11f71 12,67-87,92,147,257
+  s_c7495a484be0a4::t_798a95df851e5c 88-91,93-95,146,148-149,251-256,258-259
+README.md
+  s_de8d39c3c56992::t_862b4caffb01ec 3-7
+internal/wezspawn/wezspawn_test.go
+  s_de8d39c3c56992::t_798ecabbd11f71 20
+internal/wezspawn/domain_test.go
+  s_de8d39c3c56992::t_6db47843bf271b 1-34
+  s_de8d39c3c56992::t_51c28f5ef74865 35-58
+plugin/init.lua
+  s_de8d39c3c56992::t_cb3bf6919034d3 107,118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cd330b1f9c1e0085b21b4d8ed64aaed54b4e83e3",
+  "prompts": {},
+  "sessions": {
+    "s_c7495a484be0a4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1a8f5-858f-7852-b00c-9df8f11cdb78",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Roshan Bhatia <rshnbhatia@gmail.com>"
+    },
+    "s_de8d39c3c56992": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1ad25-3528-7c81-a954-276c13dcabf6",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Roshan Bhatia <rshnbhatia@gmail.com>"
+    }
+  }
+}
