@@ -17,6 +17,7 @@ type muxCall struct {
 
 func stubMux(t *testing.T, clients, panes string) (*[]muxCall, *bool) {
 	t.Helper()
+	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	var calls []muxCall
 	launched := false
 	realQuery := queryMux

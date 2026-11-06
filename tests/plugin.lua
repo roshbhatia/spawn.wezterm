@@ -47,3 +47,6 @@ config.keys[2].action({
 }, pane)
 assert(executed.SplitPane.command.args[#executed.SplitPane.command.args] == "host")
 print("spawn plugin tests passed")
+plugin.apply_to_config({}, { local_domain = "unix", home = "/home/test" })
+assert(plugin.action(pane, "Down", true).SplitPane.command.domain.DomainName == "unix")
+assert(plugin.action(pane, "tab", false).SpawnCommandInNewTab.domain.DomainName == "unix")

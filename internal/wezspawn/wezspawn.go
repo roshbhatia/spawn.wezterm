@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -63,9 +64,35 @@ type pane struct {
 }
 
 type target struct {
-	workspace string
-	cwd       string
-	domain    string
+	workspace      string
+	cwd            string
+	domain         string
+	defaultStartup bool
+}
+
+func configuredDomain() (string, error) {
+	root := os.Getenv("XDG_CONFIG_HOME")
+	if root == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return "", err
+		}
+		root = filepath.Join(home, ".config")
+	}
+	data, err := os.ReadFile(filepath.Join(root, "wezterm", "config.json"))
+	if errors.Is(err, os.ErrNotExist) {
+		return "", nil
+	}
+	if err != nil {
+		return "", err
+	}
+	var config struct {
+		LocalDomain string `json:"localDomain"`
+	}
+	if err := json.Unmarshal(data, &config); err != nil {
+		return "", fmt.Errorf("read WezTerm local domain: %w", err)
+	}
+	return config.LocalDomain, nil
 }
 
 func localPath(raw string) string {
@@ -116,7 +143,10 @@ func focus(clients []client, panesJSON string) (target, error) {
 
 func launch(bin, app string, found target, prog []string) error {
 	args := []string{"start", "--always-new-process"}
-	if found.domain != "" {
+	if found.defaultStartup && found.cwd == "" && len(prog) == 0 {
+		args = nil
+	}
+	if found.domain != "" && args != nil {
 		args = append(args, "--domain", found.domain)
 	}
 	if found.cwd != "" {
@@ -217,6 +247,15 @@ func Run(args []string) int {
 			fmt.Print(usage)
 			return 0
 		}
+	}
+	if overrides.domain == "" {
+		domain, err := configuredDomain()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "wezspawn: %v\n", err)
+			return 1
+		}
+		overrides.domain = domain
+		overrides.defaultStartup = domain != "" && domain != "local"
 	}
 
 	clientsJSON, err := queryMux(bin, "cli", "--no-auto-start", "list-clients", "--format", "json")

@@ -104,7 +104,7 @@ end
 function M.action(pane, kind, local_host)
   local spawn = { domain = "CurrentPaneDomain" }
   if local_host then
-    spawn.domain = { DomainName = "local" }
+    spawn.domain = { DomainName = options.local_domain or "local" }
     spawn.cwd = (options.home or wezterm.home_dir or os.getenv("HOME"))
   else
     local ok, info = pcall(function()
@@ -115,7 +115,7 @@ function M.action(pane, kind, local_host)
       return nil, err
     end
     if command then
-      spawn.domain = { DomainName = "local" }
+      spawn.domain = { DomainName = options.local_domain or "local" }
       spawn.cwd = (options.home or wezterm.home_dir or os.getenv("HOME"))
       spawn.args = command
     end

@@ -1,5 +1,10 @@
 # spawn.wezterm
 
+`wezspawn` reads `localDomain` from the configured WezTerm `config.json` when no
+`--domain` override is supplied. A persistent local mux therefore receives local
+windows and host-local split actions. An ordinary cold launch uses WezTerm's
+configured startup so session recovery can run before a fallback pane is created.
+
 Open WezTerm tabs, splits, and windows on the intended host.
 
 The Lua plugin retains native mux domains and reconstructs SSH or Mosh connections for new shells.
