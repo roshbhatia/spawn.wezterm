@@ -142,7 +142,9 @@ func focus(clients []client, panesJSON string) (target, error) {
 }
 
 func launch(bin, app string, found target, prog []string) error {
-	args := []string{"start", "--always-new-process"}
+	// No --always-new-process: such a GUI never publishes its socket, so every later
+	// CLI query would miss it and open yet another GUI onto the same mux.
+	args := []string{"start"}
 	if found.defaultStartup && found.cwd == "" && len(prog) == 0 {
 		args = nil
 	}
@@ -156,7 +158,8 @@ func launch(bin, app string, found target, prog []string) error {
 		args = append(append(args, "--"), prog...)
 	}
 	if app != "" {
-		args = append([]string{"-n", "-a", app, "--args"}, args...)
+		// No -n: a second instance would attach to the same mux and mirror its windows.
+		args = append([]string{"-a", app, "--args"}, args...)
 		out, err := exec.Command("open", args...).CombinedOutput()
 		if err != nil {
 			return fmt.Errorf("open GUI: %w: %s", err, strings.TrimSpace(string(out)))

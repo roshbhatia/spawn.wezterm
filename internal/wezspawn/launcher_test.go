@@ -197,7 +197,7 @@ func TestLaunchForwardsArgumentsThroughOpen(t *testing.T) {
 		if err := json.Unmarshal(data, &got); err != nil {
 			t.Fatal(err)
 		}
-		want := []string{"-n", "-a", "/Applications/WezTerm.app", "--args", "start", "--always-new-process", "--domain", "local", "--cwd", "/a directory"}
+		want := []string{"-a", "/Applications/WezTerm.app", "--args", "start", "--domain", "local", "--cwd", "/a directory"}
 		if len(prog) > 0 {
 			want = append(append(want, "--"), prog...)
 		}
@@ -220,8 +220,8 @@ func TestLaunchForwardsArgumentsWithoutApp(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "args.json")
 	t.Setenv("WEZSPAWN_HELPER", "1")
 	t.Setenv("WEZSPAWN_ARGS_FILE", path)
-	want := []string{"start", "--always-new-process", "--", "/bin/echo", "two words"}
-	if err := launch(binary, "", target{}, want[3:]); err != nil {
+	want := []string{"start", "--", "/bin/echo", "two words"}
+	if err := launch(binary, "", target{}, want[2:]); err != nil {
 		t.Fatal(err)
 	}
 	for attempt := 0; attempt < 100; attempt++ {
